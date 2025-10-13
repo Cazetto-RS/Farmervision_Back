@@ -1,0 +1,40 @@
+services:
+  api:
+    image: node:18
+    container_name: farmevision_api
+    working_dir: /usr/src/app
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - "80:3000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=fv_user
+      - DB_NAME=farmervision
+      - DB_PASSWORD=fv_password
+      - DB_WAIT_CONNECTIONS=true
+      - DB_CONN_LIMIT=10
+      - DB_QUEUE_LIMIT=50
+      - DB_CONN_TIMEOUT=5000
+    depends_on:
+      - db
+    command: sh -c "npm install && npm run dev"
+
+  db:
+    image: mysql:8.0
+    container_name: lv_mysql_db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=farmervision
+      - MYSQL_USER=fv_user
+      - MYSQL_PASSWORD=fv_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+    name: db_data
