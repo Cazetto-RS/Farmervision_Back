@@ -5,6 +5,6 @@ import autenticar from "../middleware/autenticacao.js";
 const router = express.Router();
 
 router.get('/planta/:id',autenticar,plantas.consultarPorId)
-router.get('/plantas', autenticar,plantas.consultarTodos);
+router.get('/plantas', plantas.consultarTodos);
 
 export default router;
